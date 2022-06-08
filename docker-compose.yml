@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+    plantenrichment_db:
+        container_name: plantenrichment_db
+        image: karakulahg/plantenrichment_db:1.0
+        restart: always
+        volumes:
+            - ./db_folder:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: qwerty123456
+            MYSQL_DATABASE: demo
+        ports:
+            - "9906:3306"
+        networks:
+            - plantenrichment_network
+    plantenrichment_web:
+        container_name: plantenrichment_web
+        image: karakulahg/plantenrichment_web:1.0
+        depends_on:
+            - plantenrichment_db
+        restart: always
+        ports:
+            - "8880:80"
+        networks:
+            - plantenrichment_network
+networks:
+    plantenrichment_network:
+        driver: bridge
